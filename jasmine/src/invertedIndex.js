@@ -4,7 +4,7 @@ work */
 
 //variables declaration
 var index = [],
-  result = [],
+  result = {},
   holder = [],
   len, i, temp = [],
   indexArray = [];
@@ -13,10 +13,7 @@ var fileRef = 'books.json';
 
 
 //main get index function
-var getIndex = function(file, stringKeys){
-
-//getIndex.prototype.indexList(file, stringKeys);
-};
+var getIndex = function(file, stringKeys) {};
 
 //function to read file contents
 getIndex.prototype.readTexts = function(obj) {
@@ -47,7 +44,7 @@ getIndex.prototype.createIndex = function(file) {
     var temp = [];
     var words = holder[i].split(/[\s\,\.\:]/);
 
-  // push words to index array
+    // push words to index array
     for (var j = 0; j < words.length; j++) {
       temp.push(words[j]);
     }
@@ -58,11 +55,11 @@ getIndex.prototype.createIndex = function(file) {
 
 // index search function
 getIndex.prototype.searchIndex = function(files, stringKeys) {
-  
+
   //check file type if its an array, variable or file path
   var file;
   if (typeof files === typeof '') {
-  
+
     //syncronous ajax request to read file if it is a file path
     $.ajax({
       url: files,
@@ -73,7 +70,7 @@ getIndex.prototype.searchIndex = function(files, stringKeys) {
       }
     });
 
-   } else {
+  } else {
     file = files;
   }
 
@@ -85,7 +82,7 @@ getIndex.prototype.searchIndex = function(files, stringKeys) {
   } else {
     converter = stringKeys;
   }
-   //convert string to lowercase and split
+  //convert string to lowercase and split
   var lower = converter.toLowerCase();
   var keys = lower.split(/[\s\,\.\:]/);
 
@@ -95,14 +92,16 @@ getIndex.prototype.searchIndex = function(files, stringKeys) {
   //loop through keys and push matching keys 
   //with their corresponding index into results
   for (var i = 0; i < keys.length; i++) {
+    var holdArr = [];
     for (var j = 0; j < index.length; j++) {
       if (index[j].indexOf(keys[i]) >= 0) {
-        result.push([keys[i], index.indexOf(index[j])]);
+        holdArr.push(index.indexOf(index[j]));
       }
-
+      result[keys[i]] = holdArr;
     }
   }
-  return result;
+  var toJSON = JSON.stringify(result);
+  return toJSON;
 
 };
 
@@ -110,17 +109,16 @@ getIndex.prototype.searchIndex = function(files, stringKeys) {
 //with the parameters
 getIndex.prototype.indexList = function(files, stringKeys) {
 
-//call the search index function
-var indexes =  getIndex.prototype.searchIndex(files, stringKeys);
+  //call the search index function
+  var indexes = getIndex.prototype.searchIndex(files, stringKeys);
+  var parser = JSON.parse(indexes);
+  //loop trough the search results and push the
+  //index numbers to indexArray;
+  
+    for (var m in parser)
+    indexArray.push(parser[m]);
 
-//loop trough the search results and push the
-//index numbers to indexArray;
-for (var l = 0; l <indexes.length; l++){
-    indexArray.push(indexes[l][1]);
-}
-
-return indexArray;
+  return indexArray; 
 };
-
 
 //getIndex.prototype.indexList(fileRef, ['Alice', 'FALLS', 'Lord', 'elf', 'wizard', 'Imagination']);
