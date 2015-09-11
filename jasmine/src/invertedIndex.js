@@ -2,7 +2,7 @@
 for the JQuery AJAX file reading functionality to 
 work */
 
-//variables declaration
+//declaration of some variables
 var index = [],
   result = {},
   holder = [],

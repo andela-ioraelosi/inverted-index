@@ -1,4 +1,4 @@
-var inverted, texts;
+var inverted, texts, parser;
 var indexRunner;
 
 beforeEach(function() {
@@ -52,7 +52,7 @@ describe("Populate Index,", function() {
 
   it("should map string keys to the correct object", function() {
 
-    var parser = JSON.parse(indexRunner);
+   parser = JSON.parse(indexRunner);
 
     console.log(parser);
     expect(parser.hasOwnProperty('of')).toBe(true);
@@ -77,7 +77,7 @@ describe("Search Index", function() {
 
     indexRunner = inverted.searchIndex(texts, "a lord RING Wonderland dwarf");
 
-    var parser = JSON.parse(indexRunner);
+    parser = JSON.parse(indexRunner);
 
     expect(parser).toBeDefined();
     expect(parser).not.toBe(null);
